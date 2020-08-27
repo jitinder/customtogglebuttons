@@ -1,8 +1,7 @@
 name: customtogglebuttons
 description: A new Flutter package project.
 version: 0.0.1
-author:
-homepage:
+repository: https://github.com/jitinder/customtogglebuttons
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
