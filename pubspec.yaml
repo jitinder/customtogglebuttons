@@ -1,6 +1,6 @@
 name: customtogglebuttons
-description: A new Flutter package project.
-version: 0.0.2
+description: A custom ToggleButtons implementation that allows more flexibility than Flutter's inbuilt ToggleButtons.
+version: 0.0.3
 repository: https://github.com/jitinder/customtogglebuttons
 
 environment:
