@@ -2,16 +2,19 @@ part of customtogglebuttons;
 
 class CustomToggleButtons extends StatelessWidget {
   CustomToggleButtons({
+    Key key,
     this.isSelected,
     this.children,
     this.onPressed,
-  });
+  }) :
+  assert(children != null),
+  assert(isSelected != null),
+  assert(children.length == isSelected.length),
+  super(key: key);
 
   final List<bool> isSelected;
   final List<Widget> children;
   final void Function(int index) onPressed;
-
-  //TODO: Check that isSelect.length = children.length
 
   @override
   Widget build(BuildContext context) {
