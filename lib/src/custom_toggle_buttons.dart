@@ -1,14 +1,9 @@
 part of customtogglebuttons;
 
-// TODO: Alignment, Vertical spacing, Border (shape, style, radius)
-//    this.disabledColor, -> if onPressed == null
-//    this.highlightColor,
-//    this.hoverColor,
-//    this.splashColor,
-//    this.selectedBorderColor,
-//    this.disabledBorderColor,
+// TODO: Alignment, Vertical spacing, Border (shape, style, radius), elevation
 
 class CustomToggleButtons extends StatelessWidget {
+
   CustomToggleButtons({
     Key key,
     this.isSelected,
@@ -20,7 +15,13 @@ class CustomToggleButtons extends StatelessWidget {
     this.fillColor,
     this.unselectedFillColor,
     this.selectedColor,
+    this.disabledColor,
+    this.highlightColor,
+    this.splashColor,
+    this.hoverColor,
     this.borderColor,
+    this.selectedBorderColor,
+    this.disabledBorderColor,
     this.borderWidth,
     this.borderRadius,
     this.spacing = 0,
@@ -39,9 +40,15 @@ class CustomToggleButtons extends StatelessWidget {
   final Color selectedColor;
   final Color fillColor;
   final Color unselectedFillColor;
+  final Color disabledColor;
+  final Color highlightColor;
+  final Color splashColor;
+  final Color hoverColor;
 
   final bool showBorders;
   final Color borderColor;
+  final Color selectedBorderColor;
+  final Color disabledBorderColor;
   final double borderWidth;
   final double borderRadius;
 
@@ -95,7 +102,13 @@ class CustomToggleButtons extends StatelessWidget {
             selectedColor: selectedColor,
             fillColor: fillColor,
             unselectedFillColor: unselectedFillColor,
+            disabledColor: disabledColor,
+            highlightColor: highlightColor,
+            splashColor: splashColor,
+            hoverColor: hoverColor,
             borderColor: borderColor,
+            selectedBorderColor: selectedBorderColor,
+            disabledBorderColor: disabledBorderColor,
             borderWidth: borderWidth,
             borderRadius: borderRadius,
             hasTopBorder: showBorders,
@@ -119,7 +132,13 @@ class _CustomToggleButton extends StatelessWidget {
     this.selectedColor,
     this.fillColor,
     this.unselectedFillColor,
+    this.disabledColor,
+    this.highlightColor,
+    this.splashColor,
+    this.hoverColor,
     this.borderColor,
+    this.selectedBorderColor,
+    this.disabledBorderColor,
     this.borderWidth,
     this.borderRadius,
     this.hasTopBorder = true,
@@ -136,44 +155,48 @@ class _CustomToggleButton extends StatelessWidget {
   final Color selectedColor;
   final Color fillColor;
   final Color unselectedFillColor;
+  final Color disabledColor;
+  final Color highlightColor;
+  final Color splashColor;
+  final Color hoverColor;
 
   final BoxConstraints constraints;
 
   final Color borderColor;
+  final Color selectedBorderColor; // TODO: Fix outline drawing logic
+  final Color disabledBorderColor;
   final double borderWidth;
-  final double
-      borderRadius; // TODO: Figure out way to make this work with Border
+  final double borderRadius; // TODO: Figure out way to make this work with Border
   final bool hasTopBorder;
   final bool hasLeftBorder;
   final bool hasRightBorder;
   final bool hasBottomBorder;
 
   Border _getBorder() {
+    Color _borderColor = borderColor;
+    if(onPressed == null){
+      _borderColor = disabledBorderColor;
+    }
+    if(isSelected){
+      _borderColor = selectedBorderColor;
+    }
     return Border(
-      top: hasTopBorder
-          ? BorderSide(
-        width: borderWidth ?? 1,
-        color: borderColor ?? Colors.black12,
-      )
-          : BorderSide.none,
-      left: hasLeftBorder
-          ? BorderSide(
-        width: borderWidth ?? 1,
-        color: borderColor ?? Colors.black12,
-      )
-          : BorderSide.none,
-      right: hasRightBorder
-          ? BorderSide(
-        width: borderWidth ?? 1,
-        color: borderColor ?? Colors.black12,
-      )
-          : BorderSide.none,
-      bottom: hasBottomBorder
-          ? BorderSide(
-        width: borderWidth ?? 1,
-        color: borderColor ?? Colors.black12,
-      )
-          : BorderSide.none,
+      top: BorderSide(
+        width: hasTopBorder ? borderWidth ?? 1 : 0,
+        color: _borderColor ?? Colors.black12,
+      ),
+      left: BorderSide(
+        width: hasLeftBorder ? borderWidth ?? 1 : 0,
+        color: _borderColor ?? Colors.black12,
+      ),
+      right: BorderSide(
+        width: hasRightBorder ? borderWidth ?? 1 : 0,
+        color: _borderColor ?? Colors.black12,
+      ),
+      bottom: BorderSide(
+        width: hasBottomBorder ? borderWidth ?? 1 : 0,
+        color: _borderColor ?? Colors.black12,
+      ),
     );
   }
 
@@ -191,6 +214,9 @@ class _CustomToggleButton extends StatelessWidget {
   }
 
   Color _getFillColor(){
+    if(onPressed == null){
+      return disabledColor;
+    }
     if(isSelected){
       if(fillColor == null){
         return Colors.transparent;
@@ -202,7 +228,27 @@ class _CustomToggleButton extends StatelessWidget {
     }
     return unselectedFillColor;
   }
+  
+  Color _getHighlightColor(context){
+    if(highlightColor == null){
+      return Colors.transparent;
+    }
+    return highlightColor;
+  }
 
+  Color _getSplashColor(context){
+    if(splashColor == null){
+      return Theme.of(context).splashColor;
+    }
+    return splashColor;
+  }
+
+  Color _getHoverColor(context){
+    if(hoverColor == null){
+      return Theme.of(context).hoverColor;
+    }
+    return hoverColor;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -215,6 +261,9 @@ class _CustomToggleButton extends StatelessWidget {
             constraints ?? BoxConstraints(minWidth: 48.0, minHeight: 48.0),
         textStyle: TextStyle(color: _getTextColor(context)),
         fillColor: _getFillColor(),
+        highlightColor: _getHighlightColor(context),
+        splashColor: _getSplashColor(context),
+        hoverColor: _getHoverColor(context),
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         padding: EdgeInsets.all(12),
         child: child,
