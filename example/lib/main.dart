@@ -116,7 +116,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     _isSelected3[index] = !_isSelected3[index];
                   });
                 },
-              spacing: 5,
             ),
             ToggleButtons(
 //              isSelected: _isSelected2,
