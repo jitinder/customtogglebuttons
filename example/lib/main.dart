@@ -65,7 +65,8 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  List<bool> _isSelected = [false, true];
+  List<bool> _isSelected3 = [false, true, false];
+  List<bool> _isSelected2 = [false, true];
 
   @override
   Widget build(BuildContext context) {
@@ -102,24 +103,33 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             CustomToggleButtons(
-              isSelected: _isSelected,
+//                isSelected: _isSelected2,
+                isSelected: _isSelected3,
+                children: <Widget>[
+                  Icon(Icons.add),
+                  Icon(Icons.remove),
+                  Icon(Icons.refresh),
+                ],
+                onPressed: (index) {
+                  setState(() {
+//                    _isSelected2[index] = !_isSelected2[index];
+                    _isSelected3[index] = !_isSelected3[index];
+                  });
+                },
+              showBorders: false,
+            ),
+            ToggleButtons(
+//              isSelected: _isSelected2,
+              isSelected: _isSelected3,
               children: <Widget>[
                 Icon(Icons.add),
                 Icon(Icons.remove),
+                Icon(Icons.refresh),
               ],
               onPressed: (index) {
                 setState(() {
-                  _isSelected[index] = !_isSelected[index];
-                });
-              }
-            ),
-            ToggleButtons(
-              isSelected: _isSelected,
-              children: <Widget>[
-                Icon(Icons.add), Icon(Icons.remove),],
-              onPressed: (index) {
-                setState(() {
-                  _isSelected[index] = !_isSelected[index];
+//                  _isSelected2[index] = !_isSelected2[index];
+                  _isSelected3[index] = !_isSelected3[index];
                 });
               },
             )
