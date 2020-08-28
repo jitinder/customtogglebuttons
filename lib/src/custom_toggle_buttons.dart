@@ -29,10 +29,16 @@ class CustomToggleButtons extends StatelessWidget {
   }
 
   bool _showLeftBorder(int index){
+    if(spacing > 0){
+      return true;
+    }
     return !_isLastIndex(index);
   }
 
   bool _showRightBorder(int index){
+    if(spacing > 0){
+      return true;
+    }
     if(_isFirstIndex(index)){
       if(children.length <= 2){
         return true;
