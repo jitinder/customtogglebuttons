@@ -1,7 +1,12 @@
 part of customtogglebuttons;
 
-// TODO: Alignment, Vertical spacing, Border (shape, style, color, radius),
-//
+// TODO: Alignment, Vertical spacing, Border (shape, style, radius)
+//    this.disabledColor, -> if onPressed == null
+//    this.highlightColor,
+//    this.hoverColor,
+//    this.splashColor,
+//    this.selectedBorderColor,
+//    this.disabledBorderColor,
 
 class CustomToggleButtons extends StatelessWidget {
   CustomToggleButtons({
@@ -9,10 +14,15 @@ class CustomToggleButtons extends StatelessWidget {
     this.isSelected,
     this.children,
     this.onPressed,
+    this.color,
     this.constraints,
     this.showBorders = true,
+    this.fillColor,
+    this.unselectedFillColor,
+    this.selectedColor,
     this.borderColor,
     this.borderWidth,
+    this.borderRadius,
     this.spacing = 0,
   })  : assert(children != null),
         assert(isSelected != null),
@@ -25,9 +35,15 @@ class CustomToggleButtons extends StatelessWidget {
 
   final BoxConstraints constraints;
 
+  final Color color;
+  final Color selectedColor;
+  final Color fillColor;
+  final Color unselectedFillColor;
+
   final bool showBorders;
   final Color borderColor;
   final double borderWidth;
+  final double borderRadius;
 
   final double spacing;
 
@@ -68,14 +84,20 @@ class CustomToggleButtons extends StatelessWidget {
         (index) {
           return _CustomToggleButton(
             child: children[index],
-            fillColor: isSelected[index] ? Colors.green : Colors.transparent,
             onPressed: onPressed == null
                 ? null
                 : () {
                     onPressed(index);
                   },
+            constraints: constraints,
+            isSelected: isSelected[index],
+            color: color,
+            selectedColor: selectedColor,
+            fillColor: fillColor,
+            unselectedFillColor: unselectedFillColor,
             borderColor: borderColor,
             borderWidth: borderWidth,
+            borderRadius: borderRadius,
             hasTopBorder: showBorders,
             hasLeftBorder: showBorders ? _showLeftBorder(index) : false,
             hasRightBorder: showBorders ? _showRightBorder(index) : false,
@@ -91,10 +113,15 @@ class _CustomToggleButton extends StatelessWidget {
   _CustomToggleButton({
     this.child,
     this.onPressed,
-    this.fillColor,
     this.constraints = const BoxConstraints(),
+    this.isSelected,
+    this.color,
+    this.selectedColor,
+    this.fillColor,
+    this.unselectedFillColor,
     this.borderColor,
     this.borderWidth,
+    this.borderRadius,
     this.hasTopBorder = true,
     this.hasLeftBorder = true,
     this.hasRightBorder = true,
@@ -103,51 +130,91 @@ class _CustomToggleButton extends StatelessWidget {
 
   final Widget child;
   final VoidCallback onPressed;
+  final bool isSelected;
+
+  final Color color;
+  final Color selectedColor;
   final Color fillColor;
+  final Color unselectedFillColor;
 
   final BoxConstraints constraints;
 
   final Color borderColor;
   final double borderWidth;
+  final double
+      borderRadius; // TODO: Figure out way to make this work with Border
   final bool hasTopBorder;
   final bool hasLeftBorder;
   final bool hasRightBorder;
   final bool hasBottomBorder;
 
+  Border _getBorder() {
+    return Border(
+      top: hasTopBorder
+          ? BorderSide(
+        width: borderWidth ?? 1,
+        color: borderColor ?? Colors.black12,
+      )
+          : BorderSide.none,
+      left: hasLeftBorder
+          ? BorderSide(
+        width: borderWidth ?? 1,
+        color: borderColor ?? Colors.black12,
+      )
+          : BorderSide.none,
+      right: hasRightBorder
+          ? BorderSide(
+        width: borderWidth ?? 1,
+        color: borderColor ?? Colors.black12,
+      )
+          : BorderSide.none,
+      bottom: hasBottomBorder
+          ? BorderSide(
+        width: borderWidth ?? 1,
+        color: borderColor ?? Colors.black12,
+      )
+          : BorderSide.none,
+    );
+  }
+
+  Color _getTextColor(context) {
+    if (isSelected) {
+      if (selectedColor == null) {
+        return Theme.of(context).colorScheme.primary;
+      }
+      return selectedColor;
+    }
+    if (color == null) {
+      return Theme.of(context).colorScheme.onSurface;
+    }
+    return color;
+  }
+
+  Color _getFillColor(){
+    if(isSelected){
+      if(fillColor == null){
+        return Colors.transparent;
+      }
+      return fillColor;
+    }
+    if(unselectedFillColor == null){
+      return Colors.transparent;
+    }
+    return unselectedFillColor;
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border(
-          top: hasTopBorder
-              ? BorderSide(
-                  width: borderWidth ?? 1,
-                  color: borderColor ?? Colors.black12,
-                )
-              : BorderSide.none,
-          left: hasLeftBorder
-              ? BorderSide(
-                  width: borderWidth ?? 1,
-                  color: borderColor ?? Colors.black12,
-                )
-              : BorderSide.none,
-          right: hasRightBorder
-              ? BorderSide(
-                  width: borderWidth ?? 1,
-                  color: borderColor ?? Colors.black12,
-                )
-              : BorderSide.none,
-          bottom: hasBottomBorder
-              ? BorderSide(
-                  width: borderWidth ?? 1,
-                  color: borderColor ?? Colors.black12,
-                )
-              : BorderSide.none,
-        ),
+        border: _getBorder(),
       ),
       child: RawMaterialButton(
-        constraints: constraints,
-        fillColor: fillColor,
+        constraints:
+            constraints ?? BoxConstraints(minWidth: 48.0, minHeight: 48.0),
+        textStyle: TextStyle(color: _getTextColor(context)),
+        fillColor: _getFillColor(),
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         padding: EdgeInsets.all(12),
         child: child,
