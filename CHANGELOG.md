@@ -1,3 +1,3 @@
-## [0.0.1] - TODO: Add release date.
+## [0.0.1] - 29th Aug 2020
 
-* TODO: Describe initial release.
+* Create basic implementation to mimic some parts of ToggleButtons.
