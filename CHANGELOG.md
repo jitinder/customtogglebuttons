@@ -1,3 +1,6 @@
+## [0.0.5] - 30th Aug 2020
+* Fix minor bugs and identify other improvements/bugs
+* Create proper example file
 ## [0.0.4] - 29th Aug 2020
 * Add Vertical and Horizontal direction support
 * Fix Border creation for both directions and selectedBorder state

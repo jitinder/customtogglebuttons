@@ -1,6 +1,6 @@
+import 'package:customtogglebuttons/customtogglebuttons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:customtogglebuttons/customtogglebuttons.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,129 +11,417 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'CustomToggleButtons Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      routes: {
+        "/": (context) => MyHomePage(title: "CustomToggleButtons Home"),
+        "/defaultIcons": (context) =>
+            MyHomePage(
+              title: "Default Icons",
+              widget: DefaultIcons(),
+            ),
+        "/verticalAlignment": (context) =>
+            MyHomePage(
+              title: "Vertically aligned",
+              widget: VerticalAligned(),
+            ),
+        "/borderStyling": (context) =>
+            MyHomePage(
+              title: "Border Styling",
+              widget: BorderStyling(),
+            ),
+        "/colorStyling": (context) =>
+            MyHomePage(
+              title: "Color Styling",
+              widget: ButtonColors(),
+            ),
+        "/spacingElevation": (context) =>
+            MyHomePage(
+              title: "Spacing and Elevation",
+              widget: SpacingAndElevation(),
+            ),
+      },
+      initialRoute: "/",
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
+class MyHomePage extends StatelessWidget {
+  MyHomePage({Key key, this.title, this.widget}) : super(key: key);
   final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  List<bool> _isSelected3 = [false, true, false];
-  List<bool> _isSelected2 = [false, true];
+  final Widget widget;
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            CustomToggleButtons(
-//                isSelected: _isSelected2,
-                isSelected: _isSelected3,
-                children: <Widget>[
-                  Icon(Icons.add),
-                  Icon(Icons.remove),
-                  Icon(Icons.refresh),
-                ],
-                onPressed: (index) {
-                  setState(() {
-//                    _isSelected2[index] = !_isSelected2[index];
-                    _isSelected3[index] = !_isSelected3[index];
-                  });
-                },
-            ),
-            ToggleButtons(
-//              isSelected: _isSelected2,
-              isSelected: _isSelected3,
-              children: <Widget>[
-                Icon(Icons.add),
-                Icon(Icons.remove),
-                Icon(Icons.refresh),
-              ],
-              onPressed: (index) {
-                setState(() {
-//                  _isSelected2[index] = !_isSelected2[index];
-                  _isSelected3[index] = !_isSelected3[index];
-                });
-              },
-            )
-          ],
-        ),
+      body: widget ??
+          ListView(
+            children: <Widget>[
+              ListTile(
+                title: Text("Default without styling"),
+                subtitle: Text("No special rules, just multiple icon lengths"),
+                trailing: Icon(Icons.navigate_next),
+                onTap: () => Navigator.pushNamed(context, "/defaultIcons"),
+              ),
+              ListTile(
+                title: Text("Vertically aligned"),
+                subtitle: Text("Vertical alignment with Icons and Text"),
+                trailing: Icon(Icons.navigate_next),
+                onTap: () => Navigator.pushNamed(context, "/verticalAlignment"),
+              ),
+              ListTile(
+                title: Text("Border Styling"),
+                subtitle: Text("Variety of styles added to borders"),
+                trailing: Icon(Icons.navigate_next),
+                onTap: () => Navigator.pushNamed(context, "/borderStyling"),
+              ),
+              ListTile(
+                title: Text("Button Colors"),
+                subtitle: Text("Set different color styles to buttons"),
+                trailing: Icon(Icons.navigate_next),
+                onTap: () => Navigator.pushNamed(context, "/colorStyling"),
+              ),
+              ListTile(
+                title: Text("Spacing and Elevation"),
+                subtitle:
+                Text("Set space between buttons and provide elevation"),
+                trailing: Icon(Icons.navigate_next),
+                onTap: () => Navigator.pushNamed(context, "/spacingElevation"),
+              ),
+            ],
+          ),
+    );
+  }
+}
+
+class DefaultIcons extends StatefulWidget {
+  @override
+  _DefaultIconsState createState() => _DefaultIconsState();
+}
+
+class _DefaultIconsState extends State<DefaultIcons> {
+  List<bool> _isSelected2 = [false, false];
+  List<bool> _isSelected3 = [true, false, false];
+  List<bool> _isSelected5 = [true, false, false, true, false];
+  List<bool> _isSelected10 = [
+    true,
+    false,
+    false,
+    true,
+    false,
+    true,
+    false,
+    false,
+    true,
+    false
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          CustomToggleButtons(
+            isSelected: _isSelected2,
+            children: <Widget>[
+              Icon(Icons.add),
+              Icon(Icons.remove),
+            ],
+            onPressed: (index) {
+              setState(() {
+                _isSelected2[index] = !_isSelected2[index];
+              });
+            },
+          ),
+          CustomToggleButtons(
+            isSelected: _isSelected3,
+            children: <Widget>[
+              Icon(Icons.add),
+              Icon(Icons.remove),
+              Icon(Icons.refresh),
+            ],
+            onPressed: (index) {
+              setState(() {
+                _isSelected3[index] = !_isSelected3[index];
+              });
+            },
+          ),
+          CustomToggleButtons(
+            isSelected: _isSelected5,
+            children: <Widget>[
+              Icon(Icons.add),
+              Icon(Icons.remove),
+              Icon(Icons.refresh),
+              Icon(Icons.cake),
+              Icon(Icons.toys),
+            ],
+            onPressed: (index) {
+              setState(() {
+                _isSelected5[index] = !_isSelected5[index];
+              });
+            },
+          ),
+          CustomToggleButtons(
+            isSelected: _isSelected10,
+            children: <Widget>[
+              Icon(Icons.add),
+              Icon(Icons.remove),
+              Icon(Icons.refresh),
+              Icon(Icons.cake),
+              Icon(Icons.toys),
+              Icon(Icons.ac_unit),
+              Icon(Icons.airplanemode_active),
+              Icon(Icons.assessment),
+              Icon(Icons.brush),
+              Icon(Icons.child_friendly),
+            ],
+            onPressed: (index) {
+              setState(() {
+                _isSelected10[index] = !_isSelected10[index];
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class VerticalAligned extends StatefulWidget {
+  @override
+  _VerticalAlignedState createState() => _VerticalAlignedState();
+}
+
+class _VerticalAlignedState extends State<VerticalAligned> {
+  List<bool> _isSelected2 = [false, false];
+  List<bool> _isSelected3 = [true, false, false];
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          CustomToggleButtons(
+            isSelected: _isSelected2,
+            children: <Widget>[Icon(Icons.add), Icon(Icons.remove)],
+            direction: Axis.vertical,
+            onPressed: (index) {
+              setState(() {
+                _isSelected2[index] = !_isSelected2[index];
+              });
+            },
+          ),
+          CustomToggleButtons(
+            isSelected: _isSelected3,
+            children: <Widget>[
+              Text("A"),
+              Text("B"),
+              Text("C"),
+            ],
+            direction: Axis.vertical,
+            onPressed: (index) {
+              setState(() {
+                _isSelected3[index] = !_isSelected3[index];
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class BorderStyling extends StatefulWidget {
+  @override
+  _BorderStylingState createState() => _BorderStylingState();
+}
+
+class _BorderStylingState extends State<BorderStyling> {
+  List<bool> _isSelected2 = [false, false];
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          // Borderless
+          CustomToggleButtons(
+            isSelected: _isSelected2,
+            children: <Widget>[
+              Icon(Icons.add),
+              Icon(Icons.remove),
+            ],
+            onPressed: (index) {
+              setState(() {
+                _isSelected2[index] = !_isSelected2[index];
+              });
+            },
+            renderBorder: false,
+          ),
+          // Thick borders with color
+          CustomToggleButtons(
+            isSelected: _isSelected2,
+            children: <Widget>[
+              Icon(Icons.add),
+              Icon(Icons.remove),
+            ],
+            onPressed: (index) {
+              setState(() {
+                _isSelected2[index] = !_isSelected2[index];
+              });
+            },
+            borderWidth: 3,
+            borderColor: Colors.red,
+            selectedBorderColor: Colors.green,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ButtonColors extends StatefulWidget {
+  @override
+  _ButtonColors createState() => _ButtonColors();
+}
+
+class _ButtonColors extends State<ButtonColors> {
+  List<bool> _isSelected2 = [false, false];
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          // selected and unselected state colors
+          CustomToggleButtons(
+            isSelected: _isSelected2,
+            children: <Widget>[
+              Icon(Icons.add),
+              Icon(Icons.remove),
+            ],
+            onPressed: (index) {
+              setState(() {
+                _isSelected2[index] = !_isSelected2[index];
+              });
+            },
+            color: Colors.red,
+            selectedColor: Colors.black,
+            fillColor: Colors.red,
+            unselectedFillColor: Colors.black,
+            renderBorder: false,
+          ),
+          // Splash Color
+          CustomToggleButtons(
+            isSelected: _isSelected2,
+            children: <Widget>[
+              Icon(Icons.add),
+              Icon(Icons.remove),
+            ],
+            onPressed: (index) {
+              setState(() {
+                _isSelected2[index] = !_isSelected2[index];
+              });
+            },
+            selectedColor: Colors.red,
+            splashColor: Colors.red,
+            renderBorder: false,
+          ),
+          // Disabled Color
+          CustomToggleButtons(
+            isSelected: _isSelected2,
+            children: <Widget>[
+              Icon(Icons.add),
+              Icon(Icons.remove),
+            ],
+            disabledColor: Colors.black45,
+            disabledFillColor: Colors.grey,
+            renderBorder: false,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SpacingAndElevation extends StatefulWidget {
+  @override
+  _SpacingAndElevationState createState() => _SpacingAndElevationState();
+}
+
+class _SpacingAndElevationState extends State<SpacingAndElevation> {
+  List<bool> _isSelected2 = [false, false];
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          // Spacing horizontal
+          CustomToggleButtons(
+            isSelected: _isSelected2,
+            children: <Widget>[
+              Icon(Icons.add),
+              Icon(Icons.remove),
+            ],
+            onPressed: (index) {
+              setState(() {
+                _isSelected2[index] = !_isSelected2[index];
+              });
+            },
+            borderColor: Colors.black,
+            spacing: 10,
+          ),
+          // Spacing vertical
+          CustomToggleButtons(
+            isSelected: _isSelected2,
+            children: <Widget>[
+              Icon(Icons.add),
+              Icon(Icons.remove),
+            ],
+            onPressed: (index) {
+              setState(() {
+                _isSelected2[index] = !_isSelected2[index];
+              });
+            },
+            direction: Axis.vertical,
+            borderColor: Colors.black,
+            spacing: 10,
+          ),
+          // Elevation
+          CustomToggleButtons(
+            isSelected: _isSelected2,
+            children: <Widget>[
+              Icon(Icons.add),
+              Icon(Icons.remove),
+            ],
+            onPressed: (index) {
+              setState(() {
+                _isSelected2[index] = !_isSelected2[index];
+              });
+            },
+            elevation: 8,
+          ),
+        ],
       ),
     );
   }
