@@ -1,3 +1,7 @@
+## [0.0.4] - 29th Aug 2020
+* Add Vertical and Horizontal direction support
+* Fix Border creation for both directions and selectedBorder state
+* Add Elevation support for elevated ToggleButtons
 ## [0.0.3] - 29th Aug 2020
 * Add support for setting selected, unselected and disabled button state colors.
 * Add support for setting hover, highlight, splash colors.

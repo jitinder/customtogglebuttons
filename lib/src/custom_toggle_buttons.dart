@@ -1,9 +1,8 @@
 part of customtogglebuttons;
 
-// TODO: Alignment, Vertical spacing, Border (shape, style, radius), elevation
+// TODO: Border (shape, style, radius)
 
 class CustomToggleButtons extends StatelessWidget {
-
   CustomToggleButtons({
     Key key,
     this.isSelected,
@@ -25,6 +24,9 @@ class CustomToggleButtons extends StatelessWidget {
     this.borderWidth,
     this.borderRadius,
     this.spacing = 0,
+    this.runSpacing = 0,
+    this.direction = Axis.horizontal,
+    this.elevation = 0,
   })  : assert(children != null),
         assert(isSelected != null),
         assert(children.length == isSelected.length),
@@ -53,6 +55,10 @@ class CustomToggleButtons extends StatelessWidget {
   final double borderRadius;
 
   final double spacing;
+  final double runSpacing;
+  final Axis direction;
+
+  final double elevation;
 
   bool _isFirstIndex(int index) {
     return index == 0;
@@ -63,6 +69,15 @@ class CustomToggleButtons extends StatelessWidget {
   }
 
   bool _showLeftBorder(int index) {
+    if (direction == Axis.vertical) {
+      return true;
+    }
+    if (isSelected[index]) {
+      if (index > 0 && isSelected[index - 1]) {
+        return false;
+      }
+      return true;
+    }
     if (spacing > 0) {
       return true;
     }
@@ -70,7 +85,13 @@ class CustomToggleButtons extends StatelessWidget {
   }
 
   bool _showRightBorder(int index) {
+    if (direction == Axis.vertical) {
+      return true;
+    }
     if (spacing > 0) {
+      return true;
+    }
+    if (isSelected[index]) {
       return true;
     }
     if (_isFirstIndex(index)) {
@@ -82,10 +103,80 @@ class CustomToggleButtons extends StatelessWidget {
     return true;
   }
 
+  bool _showTopBorder(int index) {
+    if (direction == Axis.horizontal) {
+      return true;
+    }
+    if (isSelected[index]) {
+      if (index > 0 && isSelected[index - 1]) {
+        return false;
+      }
+      return true;
+    }
+    if (spacing > 0) {
+      return true;
+    }
+    return !_isLastIndex(index);
+  }
+
+  bool _showBottomBorder(int index) {
+    if (direction == Axis.horizontal) {
+      return true;
+    }
+    if (spacing > 0) {
+      return true;
+    }
+    if (_isFirstIndex(index)) {
+      if (children.length <= 2) {
+        return false;
+      }
+      return true;
+    }
+    return true;
+  }
+
+  Border _getBorder(index) {
+    Color _borderColor = borderColor;
+    if (onPressed == null) {
+      _borderColor = disabledBorderColor;
+    }
+    if (isSelected[index]) {
+      _borderColor = selectedBorderColor;
+    }
+
+    return Border(
+      top: BorderSide(
+        width: borderWidth ?? 1,
+        color: _showTopBorder(index) ? (_borderColor ?? Colors.black12) : Colors
+            .transparent,
+      ),
+      left: BorderSide(
+        width: borderWidth ?? 1,
+        color: _showLeftBorder(index)
+            ? (_borderColor ?? Colors.black12)
+            : Colors.transparent,
+      ),
+      right: BorderSide(
+        width: borderWidth ?? 1,
+        color: _showRightBorder(index)
+            ? (_borderColor ?? Colors.black12)
+            : Colors.transparent,
+      ),
+      bottom: BorderSide(
+        width: borderWidth ?? 1,
+        color: _showBottomBorder(index)
+            ? (_borderColor ?? Colors.black12)
+            : Colors.transparent,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Wrap(
       spacing: spacing,
+      runSpacing: runSpacing,
+      direction: direction,
       children: List<Widget>.generate(
         children.length,
         (index) {
@@ -106,15 +197,9 @@ class CustomToggleButtons extends StatelessWidget {
             highlightColor: highlightColor,
             splashColor: splashColor,
             hoverColor: hoverColor,
-            borderColor: borderColor,
-            selectedBorderColor: selectedBorderColor,
-            disabledBorderColor: disabledBorderColor,
-            borderWidth: borderWidth,
-            borderRadius: borderRadius,
-            hasTopBorder: showBorders,
-            hasLeftBorder: showBorders ? _showLeftBorder(index) : false,
-            hasRightBorder: showBorders ? _showRightBorder(index) : false,
-            hasBottomBorder: showBorders,
+            border: showBorders ? _getBorder(index) : BorderSide.none,
+            //borderRadius: borderRadius,
+            elevation: elevation,
           );
         },
       ),
@@ -136,15 +221,9 @@ class _CustomToggleButton extends StatelessWidget {
     this.highlightColor,
     this.splashColor,
     this.hoverColor,
-    this.borderColor,
-    this.selectedBorderColor,
-    this.disabledBorderColor,
-    this.borderWidth,
+    this.border,
     this.borderRadius,
-    this.hasTopBorder = true,
-    this.hasLeftBorder = true,
-    this.hasRightBorder = true,
-    this.hasBottomBorder = true,
+    this.elevation,
   });
 
   final Widget child;
@@ -162,43 +241,11 @@ class _CustomToggleButton extends StatelessWidget {
 
   final BoxConstraints constraints;
 
-  final Color borderColor;
-  final Color selectedBorderColor; // TODO: Fix outline drawing logic
-  final Color disabledBorderColor;
-  final double borderWidth;
-  final double borderRadius; // TODO: Figure out way to make this work with Border
-  final bool hasTopBorder;
-  final bool hasLeftBorder;
-  final bool hasRightBorder;
-  final bool hasBottomBorder;
+  final double
+  borderRadius; // TODO: Figure out way to make this work with Border
+  final BoxBorder border;
 
-  Border _getBorder() {
-    Color _borderColor = borderColor;
-    if(onPressed == null){
-      _borderColor = disabledBorderColor;
-    }
-    if(isSelected){
-      _borderColor = selectedBorderColor;
-    }
-    return Border(
-      top: BorderSide(
-        width: hasTopBorder ? borderWidth ?? 1 : 0,
-        color: _borderColor ?? Colors.black12,
-      ),
-      left: BorderSide(
-        width: hasLeftBorder ? borderWidth ?? 1 : 0,
-        color: _borderColor ?? Colors.black12,
-      ),
-      right: BorderSide(
-        width: hasRightBorder ? borderWidth ?? 1 : 0,
-        color: _borderColor ?? Colors.black12,
-      ),
-      bottom: BorderSide(
-        width: hasBottomBorder ? borderWidth ?? 1 : 0,
-        color: _borderColor ?? Colors.black12,
-      ),
-    );
-  }
+  final double elevation;
 
   Color _getTextColor(context) {
     if (isSelected) {
@@ -213,54 +260,73 @@ class _CustomToggleButton extends StatelessWidget {
     return color;
   }
 
-  Color _getFillColor(){
-    if(onPressed == null){
+  Color _getFillColor(context) {
+    if (onPressed == null) {
       return disabledColor;
     }
-    if(isSelected){
-      if(fillColor == null){
+    if (isSelected) {
+      if (fillColor == null) {
+        if (elevation > 0) {
+          return Theme
+              .of(context)
+              .colorScheme
+              .surface;
+        }
         return Colors.transparent;
       }
       return fillColor;
     }
-    if(unselectedFillColor == null){
+    if (unselectedFillColor == null) {
+      if (elevation > 0) {
+        return Theme
+            .of(context)
+            .colorScheme
+            .surface;
+      }
       return Colors.transparent;
     }
     return unselectedFillColor;
   }
-  
-  Color _getHighlightColor(context){
-    if(highlightColor == null){
+
+  Color _getHighlightColor(context) {
+    if (highlightColor == null) {
       return Colors.transparent;
     }
     return highlightColor;
   }
 
-  Color _getSplashColor(context){
-    if(splashColor == null){
+  Color _getSplashColor(context) {
+    if (splashColor == null) {
       return Theme.of(context).splashColor;
     }
     return splashColor;
   }
 
-  Color _getHoverColor(context){
-    if(hoverColor == null){
+  Color _getHoverColor(context) {
+    if (hoverColor == null) {
       return Theme.of(context).hoverColor;
     }
     return hoverColor;
+  }
+
+  double _getElevation() {
+    if (isSelected) {
+      return 0;
+    }
+    return elevation;
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: _getBorder(),
+        border: border,
       ),
       child: RawMaterialButton(
         constraints:
             constraints ?? BoxConstraints(minWidth: 48.0, minHeight: 48.0),
         textStyle: TextStyle(color: _getTextColor(context)),
-        fillColor: _getFillColor(),
+        fillColor: _getFillColor(context),
         highlightColor: _getHighlightColor(context),
         splashColor: _getSplashColor(context),
         hoverColor: _getHoverColor(context),
@@ -268,12 +334,11 @@ class _CustomToggleButton extends StatelessWidget {
         padding: EdgeInsets.all(12),
         child: child,
         onPressed: onPressed,
-        // TODO: Modify Elevation
-        elevation: 0,
+        elevation: _getElevation(),
         highlightElevation: 0,
         disabledElevation: 0,
         focusElevation: 0,
-        hoverElevation: 0,
+        hoverElevation: _getElevation() / 2,
       ),
     );
   }
