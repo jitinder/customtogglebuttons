@@ -203,59 +203,46 @@ class CustomToggleButtons extends StatelessWidget {
   }
 
   bool _showTopBorder(int index) {
-    if (direction == Axis.horizontal) {
-      return true;
-    }
-    if (isSelected[index] && selectedBorderColor != null && spacing == 0) {
-      if (index > 0 && isSelected[index - 1]) {
-        return false;
-      }
+    return true;
+    /*if (direction == Axis.horizontal) {
       return true;
     }
     if (spacing > 0) {
       return true;
-    }
-    return true;
+    }*/
   }
 
   bool _showLeftBorder(int index) {
-    if (direction == Axis.vertical) {
-      return true;
-    }
-    if (isSelected[index] && spacing == 0) {
-      if (index > 0 && isSelected[index - 1]) {
-        return false;
-      }
+    return true;
+    /*if (direction == Axis.vertical) {
       return true;
     }
     if (spacing > 0) {
       return true;
-    }
-    return true;
+    }*/
   }
 
   bool _showRightBorder(int index) {
-    if (direction == Axis.vertical) {
-      return true;
-    }
-    if (isSelected[index] && selectedBorderColor != null && spacing == 0) {
+    return true;
+    /*if (direction == Axis.vertical) {
       return true;
     }
 
     if (spacing > 0) {
       return true;
     }
-    return _isLastIndex(index);
+    return !_isLastIndex(index);*/
   }
 
   bool _showBottomBorder(int index) {
-    if (direction == Axis.horizontal) {
+    return true;
+    /*if (direction == Axis.horizontal) {
       return true;
     }
     if (spacing > 0) {
       return true;
     }
-    return _isLastIndex(index);
+    return _isLastIndex(index);*/
   }
 
   Border _getBorder(index) {
