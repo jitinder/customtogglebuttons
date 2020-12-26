@@ -290,14 +290,14 @@ class CustomToggleButtons extends StatelessWidget {
       direction: direction,
       children: List<Widget>.generate(
         children.length,
-        (index) {
+            (index) {
           return _CustomToggleButton(
             child: children[index],
             onPressed: onPressed == null
                 ? null
                 : () {
-                    onPressed(index);
-                  },
+              onPressed(index);
+            },
             constraints: constraints,
             isSelected: isSelected[index],
             color: color,
@@ -310,6 +310,7 @@ class CustomToggleButtons extends StatelessWidget {
             splashColor: splashColor,
             hoverColor: hoverColor,
             border: renderBorder ? _getBorder(index) : Border(),
+            borderRadius: borderRadius,
             //borderRadius: borderRadius,
             elevation: elevation,
           );
@@ -371,11 +372,7 @@ class _CustomToggleButton extends StatelessWidget {
   Color _getTextColor(context) {
     if (onPressed == null) {
       return disabledColor ??
-          Theme
-              .of(context)
-              .colorScheme
-              .onSurface
-              .withOpacity(0.38);
+          Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
     }
     if (isSelected) {
       if (selectedColor == null) {
@@ -396,10 +393,7 @@ class _CustomToggleButton extends StatelessWidget {
     if (isSelected) {
       if (fillColor == null) {
         if (elevation > 0) {
-          return Theme
-              .of(context)
-              .colorScheme
-              .surface;
+          return Theme.of(context).colorScheme.surface;
         }
         return Colors.transparent;
       }
@@ -407,10 +401,7 @@ class _CustomToggleButton extends StatelessWidget {
     }
     if (unselectedFillColor == null) {
       if (elevation > 0) {
-        return Theme
-            .of(context)
-            .colorScheme
-            .surface;
+        return Theme.of(context).colorScheme.surface;
       }
       return Colors.transparent;
     }
@@ -419,9 +410,7 @@ class _CustomToggleButton extends StatelessWidget {
 
   Color _getHighlightColor(context) {
     if (highlightColor == null) {
-      return Theme
-          .of(context)
-          .highlightColor;
+      return Theme.of(context).highlightColor;
     }
     return highlightColor;
   }
@@ -447,11 +436,19 @@ class _CustomToggleButton extends StatelessWidget {
     return elevation;
   }
 
+  double _getBorderRadius() {
+    if (borderRadius == null) {
+      return 0.0;
+    }
+    return borderRadius;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         border: border,
+        borderRadius: BorderRadius.circular(12),
       ),
       child: RawMaterialButton(
         textStyle: TextStyle(
@@ -468,6 +465,9 @@ class _CustomToggleButton extends StatelessWidget {
         child: child,
         onPressed: onPressed,
         elevation: _getElevation(),
+        // shape: RoundedRectangleBorder(
+        //   borderRadius: BorderRadius.circular(_getBorderRadius()),
+        // ),
         highlightElevation: 0,
         disabledElevation: 0,
         focusElevation: 0,
