@@ -310,7 +310,7 @@ class CustomToggleButtons extends StatelessWidget {
             splashColor: splashColor,
             hoverColor: hoverColor,
             border: renderBorder ? _getBorder(index) : Border(),
-            //borderRadius: borderRadius,
+            borderRadius: borderRadius, //TEST edit
             elevation: elevation,
           );
         },
@@ -362,8 +362,7 @@ class _CustomToggleButton extends StatelessWidget {
 
   final BoxConstraints constraints;
 
-  final double
-  borderRadius; // TODO: Figure out way to make this work with Border
+  final double borderRadius;
   final BoxBorder border;
 
   final double elevation;
@@ -371,11 +370,7 @@ class _CustomToggleButton extends StatelessWidget {
   Color _getTextColor(context) {
     if (onPressed == null) {
       return disabledColor ??
-          Theme
-              .of(context)
-              .colorScheme
-              .onSurface
-              .withOpacity(0.38);
+          Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
     }
     if (isSelected) {
       if (selectedColor == null) {
@@ -396,10 +391,7 @@ class _CustomToggleButton extends StatelessWidget {
     if (isSelected) {
       if (fillColor == null) {
         if (elevation > 0) {
-          return Theme
-              .of(context)
-              .colorScheme
-              .surface;
+          return Theme.of(context).colorScheme.surface;
         }
         return Colors.transparent;
       }
@@ -407,10 +399,7 @@ class _CustomToggleButton extends StatelessWidget {
     }
     if (unselectedFillColor == null) {
       if (elevation > 0) {
-        return Theme
-            .of(context)
-            .colorScheme
-            .surface;
+        return Theme.of(context).colorScheme.surface;
       }
       return Colors.transparent;
     }
@@ -419,9 +408,7 @@ class _CustomToggleButton extends StatelessWidget {
 
   Color _getHighlightColor(context) {
     if (highlightColor == null) {
-      return Theme
-          .of(context)
-          .highlightColor;
+      return Theme.of(context).highlightColor;
     }
     return highlightColor;
   }
@@ -452,26 +439,37 @@ class _CustomToggleButton extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         border: border,
+        //borderRadius: new BorderRadius.circular(20),
+        //TEST edit
+        borderRadius: borderRadius != null
+            ? new BorderRadius.circular(borderRadius)
+            : new BorderRadius.circular(0),
       ),
-      child: RawMaterialButton(
-        textStyle: TextStyle(
-          color: _getTextColor(context),
+      child: ClipRRect(
+        //Wrapped in a ClipRRect to support rounded border.
+        borderRadius: borderRadius != null
+            ? BorderRadius.all(Radius.circular(borderRadius))
+            : BorderRadius.all(Radius.circular(0)),
+        child: RawMaterialButton(
+          textStyle: TextStyle(
+            color: _getTextColor(context),
+          ),
+          constraints:
+              constraints ?? BoxConstraints(minWidth: 48.0, minHeight: 48.0),
+          fillColor: _getFillColor(context),
+          highlightColor: _getHighlightColor(context),
+          splashColor: _getSplashColor(context),
+          hoverColor: _getHoverColor(context),
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          padding: EdgeInsets.all(12),
+          child: child,
+          onPressed: onPressed,
+          elevation: _getElevation(),
+          highlightElevation: 0,
+          disabledElevation: 0,
+          focusElevation: 0,
+          hoverElevation: _getElevation() / 2,
         ),
-        constraints:
-        constraints ?? BoxConstraints(minWidth: 48.0, minHeight: 48.0),
-        fillColor: _getFillColor(context),
-        highlightColor: _getHighlightColor(context),
-        splashColor: _getSplashColor(context),
-        hoverColor: _getHoverColor(context),
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        padding: EdgeInsets.all(12),
-        child: child,
-        onPressed: onPressed,
-        elevation: _getElevation(),
-        highlightElevation: 0,
-        disabledElevation: 0,
-        focusElevation: 0,
-        hoverElevation: _getElevation() / 2,
       ),
     );
   }
