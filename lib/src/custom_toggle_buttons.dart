@@ -38,8 +38,7 @@ class CustomToggleButtons extends StatelessWidget {
     this.runSpacing = 0,
     this.direction = Axis.horizontal,
     this.elevation = 0,
-  })  :
-        assert(children.length == isSelected.length),
+  })  : assert(children.length == isSelected.length),
         super(key: key);
 
   /// The toggle button widgets.
