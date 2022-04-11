@@ -14,9 +14,9 @@ part of customtogglebuttons;
 /// they are both correlated by their index in either list.
 class CustomToggleButtons extends StatelessWidget {
   CustomToggleButtons({
-    Key key,
-    @required this.children,
-    @required this.isSelected,
+    Key? key,
+    required this.children,
+    required this.isSelected,
     this.onPressed,
     this.constraints,
     this.color,
@@ -38,9 +38,7 @@ class CustomToggleButtons extends StatelessWidget {
     this.runSpacing = 0,
     this.direction = Axis.horizontal,
     this.elevation = 0,
-  })  : assert(children != null),
-        assert(isSelected != null),
-        assert(children.length == isSelected.length),
+  })  : assert(children.length == isSelected.length),
         super(key: key);
 
   /// The toggle button widgets.
@@ -62,7 +60,7 @@ class CustomToggleButtons extends StatelessWidget {
   /// tapped or otherwise activated.
   ///
   /// When the callback is null, all toggle buttons will be disabled.
-  final void Function(int index) onPressed;
+  final void Function(int index)? onPressed;
 
   /// Defines the button's size.
   ///
@@ -70,7 +68,7 @@ class CustomToggleButtons extends StatelessWidget {
   ///
   /// If this property is null, then
   /// BoxConstraints(minWidth: 48.0, minHeight: 48.0) is be used.
-  final BoxConstraints constraints;
+  final BoxConstraints? constraints;
 
   /// The color for descendant [Text] and [Icon] widgets if the button is
   /// enabled and not selected.
@@ -80,7 +78,7 @@ class CustomToggleButtons extends StatelessWidget {
   ///
   /// If this property is null, then Theme.of(context).colorScheme.onSurface
   /// is used.
-  final Color color;
+  final Color? color;
 
   /// The color for descendant [Text] and [Icon] widgets if the button is
   /// selected.
@@ -90,7 +88,7 @@ class CustomToggleButtons extends StatelessWidget {
   ///
   /// If this property is null, then Theme.of(context).colorScheme.primary is
   /// used.
-  final Color selectedColor;
+  final Color? selectedColor;
 
   /// The color for descendant [Text] and [Icon] widgets if the button is
   /// disabled.
@@ -99,38 +97,38 @@ class CustomToggleButtons extends StatelessWidget {
   ///
   /// If this property is null, then
   /// Theme.of(context).colorScheme.onSurface.withOpacity(0.38) is used.
-  final Color disabledColor;
+  final Color? disabledColor;
 
   /// The fill color for selected toggle buttons.
   ///
   /// If this property is null, then Colors.transparent is used.
-  final Color fillColor;
+  final Color? fillColor;
 
   /// The fill color for unselected toggle buttons.
   ///
   /// If this property is null, then Colors.transparent is used.
-  final Color unselectedFillColor;
+  final Color? unselectedFillColor;
 
   /// The fill color for disabled toggle buttons.
   ///
   /// If this property is null, then Colors.transparent is used.
-  final Color disabledFillColor;
+  final Color? disabledFillColor;
 
   /// The highlight color for the button's [InkWell].
   ///
   /// If this property is null, then Theme.of(context).highlightColor is used.
-  final Color highlightColor;
+  final Color? highlightColor;
 
   /// The splash color for the button's [InkWell].
   ///
   /// If this property is null, then Theme.of(context).splashColor is used.
-  final Color splashColor;
+  final Color? splashColor;
 
   /// The color to use for filling the button when the button has a pointer
   /// hovering over it.
   ///
   /// If this property is null, then Theme.of(context).hoverColor is used.
-  final Color hoverColor;
+  final Color? hoverColor;
 
   /// Whether or not to render a border around each toggle button.
   ///
@@ -143,17 +141,17 @@ class CustomToggleButtons extends StatelessWidget {
   /// selected.
   ///
   /// If this property is null, then Colors.black12 is used.
-  final Color borderColor;
+  final Color? borderColor;
 
   /// The border color to display when the toggle button is selected.
   ///
   /// If this property is null, then Colors.black12 is used
-  final Color selectedBorderColor;
+  final Color? selectedBorderColor;
 
   /// The border color to display when the toggle button is disabled.
   ///
   /// If this property is null, then Colors.black12 is used
-  final Color disabledBorderColor;
+  final Color? disabledBorderColor;
 
   /// The width of the border surrounding each toggle button.
   ///
@@ -163,14 +161,14 @@ class CustomToggleButtons extends StatelessWidget {
   /// To omit the border entirely, set [renderBorder] to false.
   ///
   /// If this property is null, then a width of 1.0 is used.
-  final double borderWidth;
+  final double? borderWidth;
 
   /// The radii of the border's corners.
   ///
   /// HASN'T BEEN IMPLEMENTED YET
   ///
   /// If this property is null, then non-rounded borders are used.
-  final double borderRadius;
+  final double? borderRadius;
 
   /// The space between two consecutive toggle buttons.
   ///
@@ -246,7 +244,7 @@ class CustomToggleButtons extends StatelessWidget {
   }
 
   Border _getBorder(index) {
-    Color _borderColor = borderColor;
+    Color? _borderColor = borderColor;
     if (onPressed == null) {
       _borderColor = disabledBorderColor;
     }
@@ -296,7 +294,7 @@ class CustomToggleButtons extends StatelessWidget {
             onPressed: onPressed == null
                 ? null
                 : () {
-                    onPressed(index);
+                    onPressed!(index);
                   },
             constraints: constraints,
             isSelected: isSelected[index],
@@ -346,33 +344,33 @@ class _CustomToggleButton extends StatelessWidget {
     this.elevation,
   });
 
-  final Widget child;
-  final VoidCallback onPressed;
-  final bool isSelected;
+  final Widget? child;
+  final VoidCallback? onPressed;
+  final bool? isSelected;
 
-  final Color color;
-  final Color selectedColor;
-  final Color fillColor;
-  final Color unselectedFillColor;
-  final Color disabledColor;
-  final Color disabledFillColor;
-  final Color highlightColor;
-  final Color splashColor;
-  final Color hoverColor;
+  final Color? color;
+  final Color? selectedColor;
+  final Color? fillColor;
+  final Color? unselectedFillColor;
+  final Color? disabledColor;
+  final Color? disabledFillColor;
+  final Color? highlightColor;
+  final Color? splashColor;
+  final Color? hoverColor;
 
-  final BoxConstraints constraints;
+  final BoxConstraints? constraints;
 
-  final double borderRadius;
-  final BoxBorder border;
+  final double? borderRadius;
+  final BoxBorder? border;
 
-  final double elevation;
+  final double? elevation;
 
-  Color _getTextColor(context) {
+  Color? _getTextColor(context) {
     if (onPressed == null) {
       return disabledColor ??
           Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
     }
-    if (isSelected) {
+    if (isSelected!) {
       if (selectedColor == null) {
         return Theme.of(context).colorScheme.primary;
       }
@@ -384,13 +382,13 @@ class _CustomToggleButton extends StatelessWidget {
     return color;
   }
 
-  Color _getFillColor(context) {
+  Color? _getFillColor(context) {
     if (onPressed == null) {
       return disabledFillColor ?? Colors.transparent;
     }
-    if (isSelected) {
+    if (isSelected!) {
       if (fillColor == null) {
-        if (elevation > 0) {
+        if (elevation! > 0) {
           return Theme.of(context).colorScheme.surface;
         }
         return Colors.transparent;
@@ -398,7 +396,7 @@ class _CustomToggleButton extends StatelessWidget {
       return fillColor;
     }
     if (unselectedFillColor == null) {
-      if (elevation > 0) {
+      if (elevation! > 0) {
         return Theme.of(context).colorScheme.surface;
       }
       return Colors.transparent;
@@ -406,29 +404,29 @@ class _CustomToggleButton extends StatelessWidget {
     return unselectedFillColor;
   }
 
-  Color _getHighlightColor(context) {
+  Color? _getHighlightColor(context) {
     if (highlightColor == null) {
       return Theme.of(context).highlightColor;
     }
     return highlightColor;
   }
 
-  Color _getSplashColor(context) {
+  Color? _getSplashColor(context) {
     if (splashColor == null) {
       return Theme.of(context).splashColor;
     }
     return splashColor;
   }
 
-  Color _getHoverColor(context) {
+  Color? _getHoverColor(context) {
     if (hoverColor == null) {
       return Theme.of(context).hoverColor;
     }
     return hoverColor;
   }
 
-  double _getElevation() {
-    if (isSelected) {
+  double? _getElevation() {
+    if (isSelected!) {
       return 0;
     }
     return elevation;
@@ -442,13 +440,13 @@ class _CustomToggleButton extends StatelessWidget {
         //borderRadius: new BorderRadius.circular(20),
         //TEST edit
         borderRadius: borderRadius != null
-            ? new BorderRadius.circular(borderRadius)
+            ? new BorderRadius.circular(borderRadius!)
             : new BorderRadius.circular(0),
       ),
       child: ClipRRect(
         //Wrapped in a ClipRRect to support rounded border.
         borderRadius: borderRadius != null
-            ? BorderRadius.all(Radius.circular(borderRadius))
+            ? BorderRadius.all(Radius.circular(borderRadius!))
             : BorderRadius.all(Radius.circular(0)),
         child: RawMaterialButton(
           textStyle: TextStyle(
@@ -464,11 +462,11 @@ class _CustomToggleButton extends StatelessWidget {
           padding: EdgeInsets.all(12),
           child: child,
           onPressed: onPressed,
-          elevation: _getElevation(),
+          elevation: _getElevation()!,
           highlightElevation: 0,
           disabledElevation: 0,
           focusElevation: 0,
-          hoverElevation: _getElevation() / 2,
+          hoverElevation: _getElevation()! / 2,
         ),
       ),
     );
